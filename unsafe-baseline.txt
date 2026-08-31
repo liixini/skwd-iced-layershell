@@ -1,0 +1,3 @@
+src/clipboard.rs:33:        let state = unsafe { window_clipboard::Clipboard::connect(window) }
+src/user_interface.rs:86:            let ui: IcedUserInterface<'static, _, _, _> = unsafe { mem::transmute(ui) };
+src/user_interface.rs:154:        let ui: IcedUserInterface<'static, _, _, _> = unsafe { mem::transmute(ui) };
