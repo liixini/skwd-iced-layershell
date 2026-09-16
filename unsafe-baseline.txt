@@ -1,3 +1,10 @@
+layershellev/src/lib.rs:606:        Ok(unsafe { rwh_06::WindowHandle::borrow_raw(raw) })
+layershellev/src/lib.rs:616:        Ok(unsafe { rwh_06::DisplayHandle::borrow_raw(raw) })
+layershellev/src/lib.rs:627:        Ok(unsafe { rwh_06::WindowHandle::borrow_raw(raw) })
+layershellev/src/lib.rs:638:        Ok(unsafe { rwh_06::DisplayHandle::borrow_raw(raw) })
+layershellev/src/lib.rs:1275:        Ok(unsafe { rwh_06::WindowHandle::borrow_raw(raw) })
+layershellev/src/lib.rs:1285:        Ok(unsafe { rwh_06::DisplayHandle::borrow_raw(raw) })
+layershellev/src/lib.rs:1313:        Ok(unsafe { rwh_06::DisplayHandle::borrow_raw(raw) })
 src/clipboard.rs:33:        let state = unsafe { window_clipboard::Clipboard::connect(window) }
 src/user_interface.rs:86:            let ui: IcedUserInterface<'static, _, _, _> = unsafe { mem::transmute(ui) };
 src/user_interface.rs:154:        let ui: IcedUserInterface<'static, _, _, _> = unsafe { mem::transmute(ui) };

@@ -28,9 +28,13 @@ package.
 - Retry transient `Timeout` and `Other` presentation errors when the surface
   has nonzero dimensions. Zero-sized outputs defer recovery until a later
   configure event instead of entering a redraw loop.
+- Report the Wayland output containing each layer-shell window through
+  `iced_layershell::output_name`. Remove the cached name when the window closes.
 
-Only `src/multi_window.rs` differs in production behavior from the packaged
-baseline. Wall schedules animation updates before the draw boundary.
+The output query includes the published `layershellev` 0.19.1 source with one
+accessor for its existing output-name cache. Its archive digest and source
+changes are recorded in `OUTPUT-PROVENANCE.md`. Wall schedules animation
+updates before the draw boundary.
 
 ## Build and verify
 
@@ -59,7 +63,9 @@ The crate denies unsafe Rust by default. Three narrowly allowed operations own
 the lifetime-extension and native-display invariants required by the upstream
 event loop. Each allowance is statement-local and carries a `SAFETY:`
 rationale. `unsafe-baseline.txt` is the exact source inventory; its guard
-rejects any unreviewed addition, removal, or relocation.
+rejects any unreviewed addition, removal, or relocation. The imported
+`layershellev` source adds seven unchanged upstream raw-handle borrows to that
+inventory.
 
 ## License
 

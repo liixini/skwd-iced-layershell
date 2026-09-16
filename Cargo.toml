@@ -87,6 +87,7 @@ version = "0.14"
 
 [dependencies.layershellev]
 version = "0.19.1"
+path = "layershellev"
 
 [dependencies.log]
 version = "0.4.22"

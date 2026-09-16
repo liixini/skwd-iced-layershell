@@ -6,6 +6,8 @@ mod conversion;
 mod error;
 mod event;
 mod multi_window;
+mod outputs;
+pub use outputs::output_name;
 mod proxy;
 mod user_interface;
 

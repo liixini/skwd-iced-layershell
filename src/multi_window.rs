@@ -464,6 +464,7 @@ where
         else {
             return;
         };
+        let output_name = ev.output_name(layer_shell_window.id());
         let (width, height) = layer_shell_window.get_size();
         let scale_float = layer_shell_window.scale_float();
         // events may not be handled after RequestRefreshWithWrapper in the same
@@ -531,6 +532,7 @@ where
                 window.state.viewport().logical_size(),
             );
 
+            crate::outputs::update(iced_id, output_name);
             events.push(IcedEvent::Window(IcedWindowEvent::Opened {
                 position: None,
                 size: window.state.window_size_f32(),
@@ -538,6 +540,7 @@ where
             (iced_id, window)
         };
 
+        crate::outputs::update(iced_id, output_name);
         let compositor = self
             .compositor
             .as_mut()
@@ -684,6 +687,7 @@ where
         else {
             return;
         };
+        crate::outputs::update(iced_id, None);
         self.cached_layer_dimensions.remove(&iced_id);
         self.window_manager.remove(iced_id);
         self.user_interfaces.remove(&iced_id);
