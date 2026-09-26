@@ -172,7 +172,7 @@ pub(crate) fn mouse_interaction(interaction: mouse::Interaction) -> String {
     use mouse::Interaction;
     match interaction {
         Interaction::None => Shape::Default.name().to_owned(),
-        Interaction::Idle => Shape::Wait.name().to_owned(),
+        Interaction::Idle => Shape::Default.name().to_owned(),
         Interaction::Wait => Shape::Wait.name().to_owned(),
         Interaction::Pointer => Shape::Pointer.name().to_owned(),
         Interaction::Grab => Shape::Grab.name().to_owned(),
@@ -197,3 +197,6 @@ pub(crate) fn mouse_interaction(interaction: mouse::Interaction) -> String {
 fn is_private_use(c: char) -> bool {
     ('\u{E000}'..='\u{F8FF}').contains(&c)
 }
+
+#[cfg(test)]
+mod tests;
