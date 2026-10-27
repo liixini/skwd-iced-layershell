@@ -95,7 +95,10 @@ pub struct UserInterfaces<P: Program> {
     // reference to application won't be leaked to public.
     #[allow(clippy::type_complexity)]
     uis: HashMap<Id, IcedUserInterface<'static, P::Message, P::Theme, P::Renderer>>,
-    application: Instance<P>,
+    // UIs borrow this value across events. Context::handle_event consumes and
+    // moves its Context, so storing the application inline invalidates those
+    // extended borrows. Keep the borrowed application at a stable heap address.
+    application: Box<Instance<P>>,
 }
 
 impl<P: Program> UserInterfaces<P>
@@ -105,7 +108,7 @@ where
     pub fn new(application: Instance<P>) -> Self {
         Self {
             uis: HashMap::new(),
-            application,
+            application: Box::new(application),
         }
     }
 
@@ -168,5 +171,32 @@ impl<P: Program> UserInterfaceReclaim<P::Message, P::Theme, P::Renderer>
 {
     fn reclaim(&mut self, ui: IcedUserInterface<'static, P::Message, P::Theme, P::Renderer>) {
         self.0.uis.insert(self.1, ui);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::UserInterfaces;
+    use iced_program::Instance;
+
+    #[test]
+    fn application_address_survives_manager_moves() {
+        fn view(_state: &[u8; 256]) -> iced::Element<'_, ()> {
+            iced::widget::text("stable application storage").into()
+        }
+
+        let program = iced::application(
+            || [0_u8; 256],
+            |_state: &mut [u8; 256], _message: ()| {},
+            view,
+        );
+        let (application, _) = Instance::new(program);
+        let interfaces = UserInterfaces::new(application);
+        let borrowed_address = interfaces.application() as *const _;
+
+        // ContextState moves the manager while its cached UIs retain borrows.
+        // Force a move from stack to heap, which must preserve their target.
+        let moved_interfaces = Box::new(interfaces);
+        assert_eq!(borrowed_address, moved_interfaces.application() as *const _);
     }
 }
